@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Naftali & Tayla — Our Love Story</title>
+  <meta name="description" content="The love story of Naftali and Tayla. From South Africa, across oceans, to forever.">
+  <meta property="og:title" content="Naftali & Tayla — Our Love Story">
+  <meta property="og:description" content="A scroll through our journey together.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💕</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --midnight: #090914;
+      --dark: #0f0f23;
+      --dark-warm: #15121e;
+      --cream: #f5efe6;
+      --cream-warm: #f8f3eb;
+      --ocean: #edf3f7;
+      --sage: #eef2ed;
+      --text-light: #e8dfd0;
+      --text-dark: #2a2330;
+      --gold: #c9a96e;
+      --gold-dim: rgba(201,169,110,0.15);
+      --rose: #d4838f;
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body: 'Crimson Text', serif;
+      --font-script: 'Great Vibes', cursive;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--text-light);
+      background: var(--midnight);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+
+    /* ---------- Loader ---------- */
+    #loader {
+      position: fixed; inset: 0;
+      background: var(--midnight);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999;
+      transition: opacity 1s ease;
+    }
+    #loader.hidden { opacity: 0; pointer-events: none; }
+    .loader-heart {
+      font-size: 2.5rem; color: var(--gold);
+      animation: heartbeat 1.2s ease-in-out infinite;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      15% { transform: scale(1.25); }
+      30% { transform: scale(1); }
+      45% { transform: scale(1.15); }
+    }
+
+    /* ---------- Progress Bar ---------- */
+    #progress {
+      position: fixed; top: 0; left: 0;
+      height: 3px; background: var(--gold);
+      width: 0%; z-index: 1000;
+      transition: width 0.1s linear;
+    }
+
+    /* ---------- Music Toggle ---------- */
+    #music-btn {
+      position: fixed; bottom: 2rem; right: 2rem;
+      width: 48px; height: 48px;
+      border-radius: 50%; border: 1px solid rgba(201,169,110,0.3);
+      background: rgba(9,9,20,0.7); backdrop-filter: blur(10px);
+      color: var(--gold); font-size: 1.2rem;
+      cursor: pointer; z-index: 100;
+      transition: all 0.3s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #music-btn:hover { border-color: var(--gold); background: rgba(201,169,110,0.1); }
+    #music-btn.playing { border-color: var(--gold); }
+    .music-bars { display: flex; gap: 2px; align-items: flex-end; height: 16px; }
+    .music-bars span {
+      display: block; width: 3px; background: var(--gold);
+      border-radius: 1px; height: 6px;
+    }
+    #music-btn.playing .music-bars span { animation: musicBar 0.8s ease-in-out infinite alternate; }
+    #music-btn.playing .music-bars span:nth-child(2) { animation-delay: 0.2s; }
+    #music-btn.playing .music-bars span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes musicBar {
+      0% { height: 4px; }
+      100% { height: 16px; }
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 2rem;
+      background: var(--midnight);
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute; border-radius: 50%;
+      background: white;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-pre {
+      font-family: var(--font-body);
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); opacity: 0;
+      margin-bottom: 1rem;
+    }
+    .hero-title {
+      font-family: var(--font-script);
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      font-weight: 400; line-height: 1.1;
+      color: var(--text-light); opacity: 0;
+    }
+    .hero-ampersand {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 0.35em; color: var(--gold);
+      margin: 0.2em 0;
+    }
+    .hero-date {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 300; letter-spacing: 0.15em;
+      color: var(--text-light); opacity: 0.7;
+      margin-top: 2rem; opacity: 0;
+    }
+    .hero-counters {
+      display: flex; gap: 3rem; justify-content: center;
+      margin-top: 3rem; opacity: 0;
+    }
+    .counter-number {
+      display: block;
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300; color: var(--gold);
+    }
+    .counter-label {
+      font-size: 0.8rem; letter-spacing: 0.15em;
+      text-transform: uppercase; opacity: 0.6;
+    }
+    .scroll-cue {
+      position: absolute; bottom: 3rem;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 0.8rem; opacity: 0;
+      z-index: 1;
+    }
+    .scroll-cue span {
+      font-size: 0.75rem; letter-spacing: 0.2em;
+      text-transform: uppercase; opacity: 0.5;
+    }
+    .scroll-arrow {
+      width: 20px; height: 20px;
+      border-right: 1.5px solid var(--gold);
+      border-bottom: 1.5px solid var(--gold);
+      transform: rotate(45deg);
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50% { transform: rotate(45deg) translateY(8px); }
+    }
+
+    /* ---------- Sections ---------- */
+    .chapter {
+      position: relative;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 8rem 2rem;
+    }
+    .chapter-inner {
+      max-width: 900px; width: 100%; margin: 0 auto;
+    }
+    .chapter-number {
+      font-family: var(--font-display);
+      font-size: 0.85rem; font-weight: 300;
+      letter-spacing: 0.35em; text-transform: uppercase;
+      opacity: 0.4;
+    }
+    .chapter-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300; line-height: 1.2;
+      margin: 0.5rem 0 1rem;
+    }
+    .chapter-date {
+      font-family: var(--font-body);
+      font-size: 0.85rem; letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold); margin-bottom: 3rem;
+    }
+    .chapter p {
+      font-size: clamp(1.05rem, 2vw, 1.2rem);
+      line-height: 1.85; margin-bottom: 1.5rem;
+      max-width: 680px;
+    }
+    .chapter p em {
+      font-style: italic; color: var(--gold);
+    }
+
+    /* Section themes */
+    .theme-dark { background: var(--dark); color: var(--text-light); }
+    .theme-dark-warm { background: var(--dark-warm); color: var(--text-light); }
+    .theme-midnight { background: var(--midnight); color: var(--text-light); }
+    .theme-cream { background: var(--cream); color: var(--text-dark); }
+    .theme-cream .chapter-number,
+    .theme-sage .chapter-number,
+    .theme-ocean .chapter-number,
+    .theme-cream-warm .chapter-number { opacity: 0.3; }
+    .theme-sage { background: var(--sage); color: var(--text-dark); }
+    .theme-ocean { background: var(--ocean); color: var(--text-dark); }
+    .theme-cream-warm { background: var(--cream-warm); color: var(--text-dark); }
+
+    /* ---------- Gold separator ---------- */
+    .gold-sep {
+      width: 60px; height: 1px;
+      background: var(--gold); opacity: 0.4;
+      margin: 2.5rem 0;
+    }
+
+    /* ---------- Script accent ---------- */
+    .script-accent {
+      font-family: var(--font-script);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      color: var(--gold); line-height: 1.4;
+      margin: 2rem 0;
+    }
+
+    /* ---------- Photo Grid ---------- */
+    .photo-grid {
+      display: grid; gap: 1.5rem;
+      margin: 3rem 0;
+    }
+    .photo-grid.grid-2 { grid-template-columns: 1fr 1fr; }
+    .photo-grid.grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .photo-grid.grid-1 { grid-template-columns: 1fr; max-width: 550px; }
+
+    .photo-frame {
+      position: relative; overflow: hidden;
+      border-radius: 6px;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, var(--gold-dim), rgba(212,131,143,0.08));
+      border: 1px solid rgba(201,169,110,0.12);
+    }
+    .portrait-frames .photo-frame { aspect-ratio: 3/4; }
+    .square-frames .photo-frame { aspect-ratio: 1/1; }
+    .photo-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .photo-frame:hover img { transform: scale(1.03); }
+    .photo-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 2.5rem 1rem 0.8rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.55));
+      font-size: 0.8rem; letter-spacing: 0.1em;
+      color: white; text-align: center;
+    }
+
+    .photo-frame.no-image img { display: none; }
+    .photo-frame.no-image {
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 0.6rem;
+      padding: 1rem;
+    }
+    .placeholder-icon {
+      font-size: 2rem; opacity: 0.25; display: none;
+    }
+    .no-image .placeholder-icon { display: block; }
+    .placeholder-label {
+      font-size: 0.7rem; opacity: 0.3;
+      letter-spacing: 0.1em; text-align: center;
+      display: none;
+    }
+    .no-image .placeholder-label { display: block; }
+
+    /* ---------- Closing ---------- */
+    .closing {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem;
+      background: var(--midnight); overflow: hidden;
+    }
+    .closing-script {
+      font-family: var(--font-script);
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      color: var(--gold); line-height: 1.3;
+      margin-bottom: 2rem;
+    }
+    .closing p {
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      line-height: 1.8; max-width: 500px;
+      margin-bottom: 1rem;
+    }
+    .closing-heart {
+      font-size: 2rem; color: var(--rose);
+      margin: 2rem 0;
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+    .closing-sign {
+      font-family: var(--font-display);
+      font-style: italic; font-weight: 300;
+      font-size: 1.3rem;
+      margin-top: 1rem; opacity: 0.7;
+    }
+    .closing-future {
+      margin-top: 4rem; padding-top: 2rem;
+      border-top: 1px solid rgba(201,169,110,0.15);
+      font-size: 0.85rem; opacity: 0.4;
+      letter-spacing: 0.15em; text-transform: uppercase;
+    }
+
+    /* ---------- Reveal classes ---------- */
+    .reveal { opacity: 0; transform: translateY(40px); }
+    .reveal-left { opacity: 0; transform: translateX(-40px); }
+    .reveal-right { opacity: 0; transform: translateX(40px); }
+    .reveal-scale { opacity: 0; transform: scale(0.92); }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 768px) {
+      .chapter { padding: 5rem 1.5rem; }
+      .photo-grid.grid-2,
+      .photo-grid.grid-3 { grid-template-columns: 1fr; max-width: 500px; }
+      .photo-grid.grid-2.portrait-frames .photo-frame,
+      .photo-grid.grid-3.portrait-frames .photo-frame { aspect-ratio: 3/4; max-height: 70vh; }
+      .photo-grid.grid-2.square-frames .photo-frame,
+      .photo-grid.grid-3.square-frames .photo-frame { aspect-ratio: 1/1; }
+      .hero-counters { flex-direction: column; gap: 1.5rem; }
+    }
+    @media (max-width: 480px) {
+      .chapter { padding: 4rem 1.2rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loader -->
+  <div id="loader"><div class="loader-heart">♥</div></div>
+
+  <!-- Progress -->
+  <div id="progress"></div>
+
+  <!-- Music Toggle -->
+  <button id="music-btn" title="Play/pause music" aria-label="Toggle music">
+    <div class="music-bars"><span></span><span></span><span></span></div>
+  </button>
+  <!-- Add your song: <audio id="bg-music" src="images/our-song.mp3" loop></audio> -->
+
+  <!-- ======================== HERO ======================== -->
+  <section class="hero" id="hero">
+    <div class="hero-bg" id="star-field"></div>
+    <div class="hero-content">
+      <p class="hero-pre">The love story of</p>
+      <h1 class="hero-title">
+        Naftali
+        <span class="hero-ampersand">&</span>
+        Tayla
+      </h1>
+      <p class="hero-date">2016 &mdash; Forever</p>
+      <div class="hero-counters">
+        <div class="counter">
+          <span class="counter-number" id="days-together"></span>
+          <span class="counter-label">days together</span>
+        </div>
+        <div class="counter">
+          <span class="counter-number" id="days-married"></span>
+          <span class="counter-label">days married</span>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-cue" id="scroll-cue">
+      <span>Scroll to begin our story</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ======================== CHAPTER 1 ======================== -->
+  <section class="chapter theme-dark" id="ch1">
+    <div class="chapter-inner">
+      <span class="chapter-number reveal">Chapter One</span>
+      <h2 class="chapter-title reveal">The Day I Noticed You</h2>
+      <div class="chapter-date reveal">South Africa &bull; 2016</div>
+      <p class="reveal">It was an ordinary school day. I was in Grade 11, skipping class &mdash; as one does &mdash; and I wandered over to sit with Dalya. And there you were, sitting right there with us, and all I could see were those <em>beautiful green eyes</em>.</p>
+      <p class="reveal">I was quietly, secretly captivated from that moment. But we were in different circles, different grades, and we just never really crossed paths. Life carried on, but I never forgot those eyes.</p>
+      <div class="photo-grid grid-1 reveal-scale" style="max-width:420px;">
+        <div class="photo-frame" style="aspect-ratio:1/1; border-radius:8px; border:1px solid rgba(201,169,110,0.2);">
+          <img src="images/tayla-green-eyes.png" alt="Those beautiful green eyes" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-2 portrait-frames" style="margin-top:1rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/tayla-eyes-tongue.png" alt="Tayla" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/tayla-eyes-proteas.png" alt="Tayla" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="gold-sep reveal"></div>
+      <p class="reveal">For years after, we lived in the quiet margins of each other&rsquo;s lives. A &ldquo;Happy Birthday&rdquo; message on Instagram. A small ritual, once a year, to remind the other person: <em>I remember you.</em> Neither of us knew that those tiny messages were threads slowly pulling us closer.</p>
+      <div class="photo-grid grid-1 reveal-scale" style="max-width:360px;">
+        <div class="photo-frame" style="aspect-ratio:9/16; border-radius:12px; border:1px solid rgba(201,169,110,0.2);">
+          <img src="images/instagram-messages.png" alt="Our Instagram messages — birthday wishes and the moment we exchanged numbers" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">The messages that started it all</span>
+          <span class="placeholder-icon">📸</span>
+          <span class="placeholder-label">images/instagram-messages.png</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== CHAPTER 2 ======================== -->
+  <section class="chapter theme-cream" id="ch2">
+    <div class="chapter-inner">
+      <span class="chapter-number reveal">Chapter Two</span>
+      <h2 class="chapter-title reveal">A Love Story Begins &mdash; In Lockdown</h2>
+      <div class="chapter-date reveal">June 2020 &bull; Johannesburg</div>
+      <p class="reveal">The world stopped. But somehow, we started.</p>
+      <p class="reveal">We bumped into each other on a Dije Shabbaton, and just like that we started talking again. It was natural, effortless &mdash; like picking up a conversation we&rsquo;d been waiting years to have. But the world was still locked down. So we improvised.</p>
+      <div class="gold-sep reveal"></div>
+      <p class="reveal">Our first date: watching <em>Tarzan</em> at your grandparents&rsquo; house while they were out. We sat on blankets on the floor, and Fluffy came to sit right between us. You wanted me to hold your hand. I had no idea.</p>
+      <p class="reveal" style="opacity:0">(I&rsquo;m sorry. I&rsquo;ve been making up for it ever since.)</p>
+      <p class="reveal">Our second date in my Suzuki outside Hello Love, sipping iced coffees, talking about our favourite dogs (Golden Retrievers, ahem!) and who knows what. The world was closed, but ours was just opening up.</p>
+      <div class="photo-grid grid-1 reveal-scale" style="max-width:420px;">
+        <div class="photo-frame" style="aspect-ratio:3/4;">
+          <img src="images/hello-love.png" alt="Our second date at Hello Love" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Iced coffees at Hello Love</span>
+          <span class="placeholder-icon">📸</span>
+          <span class="placeholder-label">images/hello-love.png</span>
+        </div>
+      </div>
+      <div class="photo-grid grid-2 square-frames" style="margin-top:1.5rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/date-car-selfie.png" alt="Car selfie" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/date-masks-park.png" alt="Masks in the park" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-3 square-frames" style="margin-top:1rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/date-dinner-setup.png" alt="Romantic dinner setup" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/date-tiger-teddy.png" alt="Tiger teddy" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/date-bw-formal.png" alt="Dressed up together" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-1 reveal-scale" style="max-width:480px; margin-top:1.5rem;">
+        <div class="photo-frame" style="aspect-ratio:3/4;">
+          <img src="images/date-golf-kiss.png" alt="Kissing on the golf course" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-3 square-frames" style="margin-top:1rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/date-love-locks.png" alt="Love locks bridge" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/date-lodge-selfie.png" alt="Lodge selfie" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/date-bar-night.png" alt="Night out together" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-1 reveal-scale" style="max-width:420px; margin-top:1rem;">
+        <div class="photo-frame" style="aspect-ratio:1/1;">
+          <img src="images/date-lawn-chair.png" alt="Relaxing on the lawn" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== CHAPTER 3 ======================== -->
+  <section class="chapter theme-sage" id="ch3">
+    <div class="chapter-inner">
+      <span class="chapter-number reveal">Chapter Three</span>
+      <h2 class="chapter-title reveal">Falling</h2>
+      <div class="chapter-date reveal">2020 &ndash; 2022 &bull; South Africa</div>
+      <p class="reveal">After that, we were inseparable.</p>
+      <p class="reveal">Walking hand-in-hand through Huddle Park. Getting lost in the beauty of Walter Sisulu Botanical Gardens. The zoo. Movie nights curled up together. And Michelos Pizzeria &mdash; where you would <em>always</em>, without fail, order the Creamy Neopolitana pasta and then feel sick afterwards. Every. Single. Time.</p>
+      <div class="script-accent reveal">I loved every moment of it.</div>
+      <p class="reveal">We spent almost every night together. We traveled to San Lameer &mdash; walking along the coast, playing golf, swimming in the pool. We explored the Kruger, Pilanesberg, and Dinokeng together, watching wildlife in the golden light. Our last game reserve trip to Dinokeng was right before everything changed. Life was full and sweet and entirely ours.</p>
+      <div class="photo-grid grid-3 portrait-frames">
+        <div class="photo-frame reveal-scale">
+          <img src="images/huddle-park.png" alt="Walking in Huddle Park" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Huddle Park walks</span>
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/walter-sisulu.png" alt="Walter Sisulu Botanical Gardens" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Walter Sisulu Gardens</span>
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/zoo-night.png" alt="Zoo night date" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Zoo night date</span>
+        </div>
+      </div>
+      <div class="photo-grid grid-3 square-frames" style="margin-top:1rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/san-lameer-beach.png" alt="San Lameer beach" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">San Lameer coast</span>
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/san-lameer-pool.png" alt="San Lameer pool" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Pool days at San Lameer</span>
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/kruger-early.png" alt="Kruger National Park" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Kruger Park</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== CHAPTER 4 ======================== -->
+  <section class="chapter theme-dark-warm" id="ch4">
+    <div class="chapter-inner">
+      <span class="chapter-number reveal">Chapter Four</span>
+      <h2 class="chapter-title reveal">Oceans Between Us</h2>
+      <div class="chapter-date reveal">October 2022 &ndash; 2025</div>
+      <p class="reveal">Then came the hardest chapter.</p>
+      <p class="reveal">At the end of 2022, we both moved away to different countries. An entire world stretched between us, held together by a plan that required more patience than we knew we had: wait for your permanent residency, so you&rsquo;d always be able to visit your family.</p>
+      <div class="gold-sep reveal"></div>
+      <p class="reveal">The distance was brutal. Time zones that never quite aligned. Video calls that were never long enough. Airports that became the most emotional places on earth &mdash; every arrival a celebration, every departure a quiet heartbreak.</p>
+      <p class="reveal">But we held on. We visited each other whenever we could &mdash; we both flew back to South Africa for Eitan and Kayla&rsquo;s wedding, and you came to visit me in Israel multiple times.</p>
+      <div class="photo-grid grid-2 portrait-frames">
+        <div class="photo-frame reveal-scale">
+          <img src="images/brothers-wedding.png" alt="Brother's wedding in South Africa" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Eitan &amp; Kayla&rsquo;s wedding, South Africa</span>
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/israel-beach-sunset.png" alt="Together in Israel" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Reunited in Israel</span>
+        </div>
+      </div>
+      <div class="photo-grid grid-2 square-frames" style="margin-top:1rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/visit-dinner.png" alt="Dinner date" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/visit-silly.png" alt="Being silly together" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-2 square-frames" style="margin-top:1rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/visit-noodles.png" alt="Noodles" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/visit-bus.png" alt="Bus selfie" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <p class="reveal">We chose each other, again and again, across oceans and time zones and exhaustion. Two and a half long years of waiting. And we made it.</p>
+      <div class="script-accent reveal">Some love is strong enough to cross any distance.</div>
+    </div>
+  </section>
+
+  <!-- ======================== CHAPTER 5 ======================== -->
+  <section class="chapter theme-dark" id="ch5" style="background: linear-gradient(180deg, #1a0f18 0%, #1f1525 50%, #15101e 100%);">
+    <div class="chapter-inner">
+      <span class="chapter-number reveal">Chapter Five</span>
+      <h2 class="chapter-title reveal">Forever Starts at Sunset</h2>
+      <div class="chapter-date reveal">2 July 2023 &bull; Ramon Crater, Israel</div>
+      <p class="reveal">In the Ramon Crater in southern Israel, as the desert sun painted the sky in gold and amber, I asked you to marry me. I was so excited, so happy, so deeply grateful to be able to ask my soulmate to spend forever with me.</p>
+      <p class="reveal">I couldn&rsquo;t keep the secret, of course. I never can with you. I basically told you every detail beforehand. But none of that mattered &mdash; the moment was still ours, and it was still perfect.</p>
+      <div class="gold-sep reveal"></div>
+      <p class="reveal">The vastness of the crater. The warmth of the desert sunset. And the rest of our lives stretching out ahead, wide open and full of promise.</p>
+      <p class="reveal">And you? You just took the ring and put it on. You never even said yes.</p>
+      <div class="script-accent reveal">But I knew.</div>
+      <div class="photo-grid grid-1 reveal-scale" style="max-width:500px;">
+        <div class="photo-frame" style="aspect-ratio:9/16; border-radius:8px; border:1px solid rgba(201,169,110,0.25);">
+          <img src="images/proposal-sunset-kiss.png" alt="Kissing at sunset after the proposal" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-2 portrait-frames" style="margin-top:1.5rem;">
+        <div class="photo-frame reveal-scale" style="aspect-ratio:9/16; border-radius:8px; border:1px solid rgba(201,169,110,0.25);">
+          <img src="images/the-proposal.png" alt="The proposal at Ramon Crater" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">The moment I asked forever</span>
+        </div>
+        <div class="photo-frame reveal-scale" style="aspect-ratio:9/16; border-radius:8px; border:1px solid rgba(201,169,110,0.25);">
+          <img src="images/engaged-selfie.png" alt="Engaged selfie with ring" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-1 reveal-scale" style="max-width:500px; margin-top:1.5rem;">
+        <div class="photo-frame" style="aspect-ratio:3/4; border-radius:8px; border:1px solid rgba(201,169,110,0.25);">
+          <img src="images/crater-landscape.png" alt="Ramon Crater landscape" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-2 square-frames" style="margin-top:1.5rem;">
+        <div class="photo-frame reveal-scale" style="border-radius:8px; border:1px solid rgba(201,169,110,0.25);">
+          <img src="images/engaged-ring.png" alt="Showing the ring" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale" style="border-radius:8px; border:1px solid rgba(201,169,110,0.25);">
+          <img src="images/ramon-crater-selfie.png" alt="Ramon Crater selfie" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Ramon Crater</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== CHAPTER 6 ======================== -->
+  <section class="chapter theme-ocean" id="ch6">
+    <div class="chapter-inner">
+      <span class="chapter-number reveal">Chapter Six</span>
+      <h2 class="chapter-title reveal">Adventures Across the World</h2>
+      <div class="chapter-date reveal">April 2024 &bull; Melbourne &amp; Beyond</div>
+      <p class="reveal">After the engagement, the adventures only grew bigger. I flew to Australia to visit you and your family, and it turned out to be one of the best trips of my life.</p>
+      <p class="reveal">We scratched kangaroo chins. We explored the aquarium. We wandered through Melbourne together, dreaming about the life we were about to build. And lots of embarrassing doctor visits lol.</p>
+      <div class="photo-grid grid-3 square-frames">
+        <div class="photo-frame reveal-scale">
+          <img src="images/kangaroos.png" alt="Meeting kangaroos" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Meeting the locals</span>
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/aus-kangaroo-feeding.png" alt="Feeding a kangaroo" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/aus-koala-bench.png" alt="Koala bench" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-3 square-frames" style="margin-top:1rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/aquarium-jellyfish.png" alt="Aquarium jellyfish" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Melbourne Aquarium</span>
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/aus-melbourne-sunset.png" alt="Melbourne sunset" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/aus-skyline-wheel.png" alt="Skyline wheel" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-1 reveal-scale" style="margin-top:1rem;">
+        <div class="photo-frame" style="aspect-ratio:16/9;">
+          <img src="images/aus-coast-panorama.png" alt="Australian coastline" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="gold-sep reveal"></div>
+      <p class="reveal">And then &mdash; the Whitsunday Islands. Crystal water, white sand, jet skiing, scuba diving, and you beside me. <em>The most incredible experience I&rsquo;ve ever had.</em> Some moments are too beautiful for words, so I&rsquo;ll let the pictures speak for themselves.</p>
+      <div class="photo-grid grid-1 reveal-scale" style="margin-top:1rem;">
+        <div class="photo-frame" style="aspect-ratio:16/9;">
+          <img src="images/whitsundays-whitehaven.png" alt="Whitehaven Beach" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-3" style="margin-top:1rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/whitsundays-jetski.png" alt="Jet skiing" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/whitsundays-harbor.png" alt="Whitsundays harbor" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/whitsundays-jetty.png" alt="Whitsundays coast" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-3 square-frames" style="margin-top:1rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/whitsundays-beach-selfie.png" alt="Beach selfie" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/whitsundays-rocks.png" alt="Whitsunday Islands" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Whitsunday Islands</span>
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/whitsundays-lunch.png" alt="Whitsundays lunch" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">We desperately wanted hot chips</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== CHAPTER 7 ======================== -->
+  <section class="chapter theme-cream-warm" id="ch7">
+    <div class="chapter-inner">
+      <span class="chapter-number reveal">Chapter Seven</span>
+      <h2 class="chapter-title reveal">I Do</h2>
+      <div class="chapter-date reveal">27 March 2025 &bull; Israel</div>
+      <p class="reveal">After years of waiting. Thousands of miles. Countless airport goodbyes. And a love that simply refused to give up.</p>
+      <div class="script-accent reveal">We got married.</div>
+      <p class="reveal">Your papers came through, and on the 27th of March 2025, I married my soulmate. Family came from around the world to celebrate with us &mdash; from South Africa, from Australia, from everywhere our journey had touched.</p>
+      <div class="photo-grid grid-1 reveal-scale" style="max-width:480px;">
+        <div class="photo-frame" style="aspect-ratio:3/4; border-radius:8px; border:1px solid rgba(201,169,110,0.2);">
+          <img src="images/wedding-chuppah.png" alt="Under the chuppah" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Under the chuppah</span>
+        </div>
+      </div>
+      <p class="reveal">I am so grateful that you both moved here for me and let me have the wedding I wanted, even though I know it wasn&rsquo;t easy for you. That selflessness is one of the thousands of reasons I love you and am forever grateful.</p>
+      <p class="reveal">Standing there, watching you, I knew that every hard day, every lonely night, every tearful goodbye at an airport had led us exactly where we were meant to be.</p>
+      <div class="photo-grid grid-2 portrait-frames" style="margin-top:1.5rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/wedding-bw.png" alt="Wedding moment" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Mr &amp; Mrs Urison</span>
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/wedding-dance.png" alt="First dance" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">A matter of principle blah blah blah&hellip;</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== CHAPTER 8 ======================== -->
+  <section class="chapter theme-dark" id="ch8">
+    <div class="chapter-inner">
+      <span class="chapter-number reveal">Chapter Eight</span>
+      <h2 class="chapter-title reveal">Our First Year</h2>
+      <div class="chapter-date reveal">2025 &ndash; 2026 &bull; Herzliya, Israel</div>
+      <p class="reveal">Our first year of marriage. A small apartment at Ha&rsquo;aliyah HaShniya 23, Herzliya &mdash; too small and underground, but beautifully designed by you. Fuelled by a truly unreasonable number of Aroma iced coffees and ice creams.</p>
+      <div class="photo-grid grid-1 reveal-scale" style="max-width:480px;">
+        <div class="photo-frame" style="aspect-ratio:4/3;">
+          <img src="images/jerusalem-sign.png" alt="Jerusalem" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Jerusalem</span>
+        </div>
+      </div>
+      <div class="photo-grid grid-2 square-frames" style="margin-top:1rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/year1-face-masks.png" alt="Face masks on the couch" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/year1-restaurant.png" alt="Tayla at a restaurant" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <p class="reveal">This year tested us in ways we never expected. We spent countless hours together in the bomb shelter during the Iran wars &mdash; holding each other through moments that were genuinely scary. We are figuring out how to share a life and soul as a married couple &mdash; two very different people learning to live under one roof, with all the compromise and stubbornness that comes with it. But even in all the tough moments, I am forever grateful I chose you.</p>
+      <div class="photo-grid grid-2 square-frames">
+        <div class="photo-frame reveal-scale">
+          <img src="images/graduation.png" alt="Graduation" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Graduation day</span>
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/friends-wedding.png" alt="Friends wedding" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Friends&rsquo; weddings</span>
+        </div>
+      </div>
+      <div class="photo-grid grid-2 square-frames" style="margin-top:1rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/year1-friends-wedding2.png" alt="At a friend's wedding" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/year1-event.png" alt="Night out together" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-2 square-frames" style="margin-top:1rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/year1-night-selfie.png" alt="Night selfie" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/year1-telfed.png" alt="Telfed event" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <p class="reveal">We traveled back to South Africa together (with Azi in tow). You finally saw lions in the Kruger and visited Cape Town for the first time. Then, Josh made Aliyah and got engaged to Tamar. And now your parents and your other brother are on their way too &mdash; your whole family coming closer, piece by piece. They even beat my parents to the move.</p>
+      <div class="photo-grid grid-2 portrait-frames">
+        <div class="photo-frame reveal-scale">
+          <img src="images/elephant-selfie.png" alt="Elephant selfie" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/elephant-sanctuary.png" alt="Standing with elephant" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-3 square-frames" style="margin-top:1rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/sa-trip-dog.png" alt="South Africa trip" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Zoe is scarier than Axel</span>
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/cape-town-aquarium.png" alt="Cape Town aquarium" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Aquarium</span>
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/sa-family.png" alt="Family time" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="photo-grid grid-1 reveal-scale" style="max-width:480px; margin-top:1rem;">
+        <div class="photo-frame" style="aspect-ratio:4/3;">
+          <img src="images/year1-family-dinner.png" alt="Family dinner" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+      <div class="gold-sep reveal"></div>
+      <p class="reveal">You are sensitive and pure. You are brave and resilient. You are stubborn in the most beautiful way &mdash; you get things done. You cook for me, you look after me, you always want what&rsquo;s best for me. You make me feel loved every single day.</p>
+      <p class="reveal">Even when you sometimes get cross at me for absolutely no reason at all.</p>
+      <div class="script-accent reveal">I am so blessed to call you my wife.</div>
+      <p class="reveal">It hasn&rsquo;t always been easy. But maybe that&rsquo;s just what it means to build a life together &mdash; you fight through the hard parts because what you have is worth every moment of it. And what we have is everything.</p>
+      <div class="photo-grid grid-2 square-frames">
+        <div class="photo-frame reveal-scale">
+          <img src="images/wedding-party.png" alt="Celebrating" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/purim.png" alt="Purim" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Purim</span>
+        </div>
+      </div>
+      <div class="photo-grid grid-3 square-frames" style="margin-top:1rem;">
+        <div class="photo-frame reveal-scale">
+          <img src="images/year1-purim-costumes.png" alt="Purim costumes" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/year1-train-alpaca.png" alt="Train with alpaca toy" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+        <div class="photo-frame reveal-scale">
+          <img src="images/year1-sparkler.png" alt="Sparkler" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== CLOSING ======================== -->
+  <section class="closing" id="closing">
+    <div class="hero-bg" id="star-field-end"></div>
+    <div style="position:relative; z-index:1;">
+      <div class="closing-script reveal">Happy 1st Anniversary</div>
+      <div class="closing-heart reveal">♥</div>
+      <p class="reveal">To the girl with the beautiful eyes I noticed all those years ago.<br>To the woman who crossed oceans to be with me.<br>To my soulmate, my best friend, my wife.</p>
+      <p class="reveal">Thank you for choosing me. Every single day.</p>
+      <p class="reveal">I love you, Tay.</p>
+      <div class="closing-sign reveal">&mdash; Your Naf</div>
+      <div class="photo-grid grid-1 reveal-scale" style="max-width:400px; margin:3rem auto 0;">
+        <div class="photo-frame" style="aspect-ratio:1/1; border-radius:50%; border:2px solid rgba(201,169,110,0.3);">
+          <img src="images/us-favorite.png" alt="Us" loading="lazy" onerror="this.parentElement.classList.add('no-image')" style="border-radius:50%; object-position: center 20%;">
+        </div>
+      </div>
+      <div class="closing-future reveal">
+        Up next &mdash; our new apartment and a lifetime of new chapters with&hellip;
+      </div>
+      <div class="photo-grid grid-1 reveal-scale" style="max-width:280px; margin:1.5rem auto 0;">
+        <div class="photo-frame" style="aspect-ratio:3/4; border-radius:12px; border:1px solid rgba(201,169,110,0.2);">
+          <img src="images/axel.png" alt="Axel" loading="lazy" onerror="this.parentElement.classList.add('no-image')">
+          <span class="photo-caption">Axel</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* ---------- Stars ---------- */
+    function createStars(container, count) {
+      for (let i = 0; i < count; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        s.style.left = Math.random() * 100 + '%';
+        s.style.top = Math.random() * 100 + '%';
+        s.style.width = s.style.height = (Math.random() * 2.5 + 0.5) + 'px';
+        s.style.animationDelay = (Math.random() * 4) + 's';
+        s.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        container.appendChild(s);
+      }
+    }
+    createStars(document.getElementById('star-field'), 120);
+    createStars(document.getElementById('star-field-end'), 120);
+
+    /* ---------- Day counters ---------- */
+    const togetherStart = new Date(2020, 5, 28);
+    const marriedStart = new Date(2025, 2, 27);
+    const now = new Date();
+    const daysBetween = (a, b) => Math.floor((b - a) / 86400000);
+    document.getElementById('days-together').textContent = daysBetween(togetherStart, now).toLocaleString();
+    document.getElementById('days-married').textContent = daysBetween(marriedStart, now).toLocaleString();
+
+    /* ---------- Loader ---------- */
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+        animateHero();
+      }, 600);
+    });
+
+    /* ---------- Progress bar ---------- */
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+      document.getElementById('progress').style.width = pct + '%';
+    });
+
+    /* ---------- Hero animation ---------- */
+    function animateHero() {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      tl.to('.hero-pre', { opacity: 1, duration: 1, delay: 0.3 })
+        .to('.hero-title', { opacity: 1, duration: 1.2 }, '-=0.6')
+        .to('.hero-date', { opacity: 0.7, duration: 1 }, '-=0.7')
+        .to('.hero-counters', { opacity: 1, duration: 1 }, '-=0.5')
+        .to('#scroll-cue', { opacity: 1, duration: 1 }, '-=0.4');
+    }
+
+    /* ---------- Scroll-triggered reveals ---------- */
+    document.querySelectorAll('.reveal').forEach(el => {
+      gsap.to(el, {
+        opacity: 1, y: 0,
+        duration: 0.9, ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        }
+      });
+    });
+    document.querySelectorAll('.reveal-left').forEach(el => {
+      gsap.to(el, {
+        opacity: 1, x: 0,
+        duration: 0.9, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 85%' }
+      });
+    });
+    document.querySelectorAll('.reveal-right').forEach(el => {
+      gsap.to(el, {
+        opacity: 1, x: 0,
+        duration: 0.9, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 85%' }
+      });
+    });
+    document.querySelectorAll('.reveal-scale').forEach(el => {
+      gsap.to(el, {
+        opacity: 1, scale: 1,
+        duration: 0.9, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 88%' }
+      });
+    });
+
+    /* ---------- Parallax on stars ---------- */
+    gsap.to('#star-field', {
+      y: -100,
+      scrollTrigger: {
+        trigger: '.hero', start: 'top top', end: 'bottom top',
+        scrub: 1
+      }
+    });
+
+    /* ---------- Hide scroll cue on scroll ---------- */
+    ScrollTrigger.create({
+      trigger: '.hero',
+      start: 'top top',
+      end: '+=200',
+      onLeave: () => gsap.to('#scroll-cue', { opacity: 0, duration: 0.4 }),
+      onEnterBack: () => gsap.to('#scroll-cue', { opacity: 1, duration: 0.4 }),
+    });
+
+    /* ---------- Music toggle ---------- */
+    const musicBtn = document.getElementById('music-btn');
+    const audio = document.getElementById('bg-music');
+    if (audio) {
+      musicBtn.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play();
+          musicBtn.classList.add('playing');
+        } else {
+          audio.pause();
+          musicBtn.classList.remove('playing');
+        }
+      });
+    } else {
+      musicBtn.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
